@@ -46,8 +46,8 @@
     "index.html": {
       "settings": {
         "main": true,
-        "title": "Home",
-        "meta_descr": "",
+        "title": "DebiOS - Operating system in batch!",
+        "meta_descr": "DebiOS is simulator of operating system created in batch.",
         "header_custom": "",
         "footer_custom": "",
         "html_before": ""
