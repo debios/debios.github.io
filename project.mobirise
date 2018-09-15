@@ -40,7 +40,9 @@
     "versionFirst": "4.7.6",
     "uniqCompNum": 3,
     "versionPublish": "4.8.2",
-    "screenshot": "screenshot.png"
+    "screenshot": "screenshot.png",
+    "favicon": "@PROJECT_PATH@/assets/images/debioaslogo-128x51.png",
+    "noImageResize": ""
   },
   "pages": {
     "index.html": {
