@@ -61,10 +61,14 @@
     "siteUrl": "https://snakercz.github.io",
     "sitemapSwitcherAuto": "on",
     "cookiesAlert": false,
+<<<<<<< HEAD
     "gdpr": false,
     "publishType": "github",
     "gitHubName": "snakercz",
     "gitHubPath": ""
+=======
+    "gdpr": false
+>>>>>>> 8036582f54d45db4999947f2ef7b0f952b960f72
   },
   "pages": {
     "index.html": {
