@@ -1,0 +1,98 @@
+@echo off
+::Initialize UTF-8
+chcp 65001
+
+::Notepad
+title DebiAPP: Notepad
+cd..
+if not exist "%cd%\user" mkdir user
+cd core
+
+:mainmenu
+mode con: cols=81 lines=30
+cls
+echo [][][][][][][][][][][][][][][][][][]Notepad[][][][][][][][][][][][][][][][][][][]
+echo.
+echo                     Help:
+echo                     create - Creates a file
+echo                     read - Reads already created file
+echo                     exit - Exits notepad app
+echo.
+goto cmd
+:badcmd
+echo Unknown command!
+:cmd
+set /p prikaz=Command: 
+
+set create=create
+set exit=exit
+
+if "%prikaz%" equ "%create%" goto newfile
+if "%prikaz%" equ "%exit%" goto exit
+if "%prikaz%" equ "" goto badcmd
+if "%prikaz%" equ " " goto badcmd
+if "%prikaz%" equ "read" goto read
+goto badcmd
+
+:newfiledeny
+echo Please select different filename
+:newfile
+set /p filename=Set filename: 
+
+if "%filename%" equ "" goto newfiledeny
+if "%filename%" equ " " goto newfiledeny
+if "%filename%" equ "  " goto newfiledeny
+if "%filename%" equ "   " goto newfiledeny
+if "%filename%" equ "    " goto newfiledeny
+
+
+cd..
+cd user
+cls
+echo [][][][][][][][][][][][][][][][][][]Notepad[][][][][][][][][][][][][][][][][][][]
+echo Filename: %filename%.txt - TO SAVE FILE TYPE "SAVE" (case-sensitive)
+echo.
+:content
+set /p content=
+set save=SAVE
+if "%content%" equ "%save%" goto save
+echo %content% >> %filename%.txt
+goto content
+
+:save
+cd..
+cd core
+echo.
+echo File saved to /user/%filename%.txt
+echo Press ENTER to return to main menu
+pause >nul
+goto mainmenu
+
+:read
+cd..
+cd user
+cls
+echo [][][][][][][][][][][][][][][][][][]Notepad[][][][][][][][][][][][][][][][][][][]
+echo Please type the name of the file in /user/ folder (without the .txt!)
+echo To end the read session, type END (case-sensitive)
+
+:enterfile
+set /p soubor=Filename: 
+
+if "%soubor%" equ "END" cd.. & cd core & goto mainmenu
+if not exist "%cd%\%soubor%.txt" goto nonexistent
+
+
+type %soubor%.txt
+echo.
+goto enterfile
+
+
+:nonexistent
+echo This file does not exist! Please enter a valid filename.
+goto enterfile
+
+:exit
+echo Shutting down...
+call exit
+call rename notepad.bat notepad.debiapp

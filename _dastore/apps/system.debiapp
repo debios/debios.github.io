@@ -1,0 +1,88 @@
+@echo off
+
+::RESIZE
+mode con: cols=120 lines=30
+
+::SET DATE 
+for /f %%x in ('wmic path win32_localtime get /format:list ^| findstr "="') do set %%x
+set today=%year%.%month%.%day%
+
+::SET VARIABLES, VERSIONS AND TIME
+cd..
+cd data
+cd info
+set /p nezev=<title.debidat
+set /p jadr=<kernel.debidat
+set /p verzee=<ver.debidat
+set arch=%processor_architecture%
+set cas=%time%
+set datum=%date%
+cd..
+cd..
+cd core
+
+::SYSINFO MAIN SCREEN
+:uvod
+color 1F
+title DebiAPP: DebiOS SystemInfo
+for %%d in ( A ) do echo.|set /p=System info:
+ping localhost >nul
+echo.
+echo System title: %nezev%
+echo System kernel: %jadr%
+ping localhost -n 2 >nul
+echo System version: %verzee%
+ping localhost -n 1 >nul
+echo Computer name: %computername%
+echo CPU architecture: %processor_architecture%
+cd..
+echo DebiOS Install path: %cd%
+set debipath=%cd%
+cd core 
+echo Time: %time%
+echo Date: %date%
+ping localhost -n 2 >nul
+echo.
+:rozhodnuti
+echo Do you want to save this data to file? Y/N
+echo.
+set /p an=
+if /i "%an%"=="Y" goto ano
+if /i "%an%"=="N" goto neee
+
+msg %username% Use Y/N!
+pause
+GOTO rozhodnuti
+
+::SAVING TO LOG FILE
+:ano
+cls
+cd..
+cd LOG
+echo #######################%DATE%,%time%####################### >>log%year%.%month%.%day%.log
+echo %nezev% >>log%year%.%month%.%day%.log
+echo %jadr% >>log%year%.%month%.%day%.log
+echo %verzee% >>log%year%.%month%.%day%.log
+echo %arch% >>log%year%.%month%.%day%.log
+echo %computername% >>log%year%.%month%.%day%.log
+echo %debipath% >>log%year%.%month%.%day%.log
+echo %cas% >>log%year%.%month%.%day%.log
+echo %datum% >>log%year%.%month%.%day%.log
+echo File created on %date%, %cas% by user %username% (%uzivatel%)>>log%year%.%month%.%day%.log
+echo ############################END############################ >>log%year%.%month%.%day%.log
+echo. >>log%year%.%month%.%day%.log
+echo Data saved to file: 
+echo log%year%.%month%.%day%.log in folder LOG
+echo Click ENTER to return to the system
+PAUSE
+cd..
+cd core
+echo Quitting SysInfo...
+call exit
+call rename system.bat system.debiapp
+
+::SHUTDOWN WITHOUT SAVING
+:neee
+echo Quitting SysInfo...
+call exit
+call rename system.bat system.debiapp
