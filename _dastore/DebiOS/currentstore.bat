@@ -42,17 +42,13 @@ download http://raw.githubusercontent.com/debios/debios.github.io/master/_dastor
 
 ::UPDATE CHECK
 :updatecheck
-cd..
-cd data
-cd debiappstore
-set pathdl=%mypath:~0,-3%\download.exe
-"%pathdl%" http://raw.githubusercontent.com/debios/debios.github.io/master/_verdata/appstore.md current.debidat >nul
-set currentver=<current.debidat
-del current.debidat >nul
-cd..
-cd..
-cd system
-if %ver% equ %currentver% goto store_update_skip
+download http://raw.githubusercontent.com/debios/debios.github.io/master/_verdata/appstore.md currentstore.debidat >nul
+set /p currentver=<currentstore.debidat
+del currentstore.debidat >nul
+if NOT "%ver%" == "%currentver%" goto store_update_ask
+goto store_update_skip
+
+:store_update_ask
 echo There is a new version of DebiAPP Store. Do you want to download it?
 echo Disclaimer: Without the latest version, some apps might be unavailable.
 echo.
