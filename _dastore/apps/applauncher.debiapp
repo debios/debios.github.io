@@ -1,0 +1,105 @@
+@echo off
+::Initialize UTF-8
+chcp 65001
+
+::App Launcher
+title DebiAPP: App Launcher
+cd..
+if not exist "%cd%\user" mkdir user
+cd core
+
+:mainmenu
+mode con: cols=83 lines=30
+cls
+echo - - - - - - - - - - - - - - - - - APP LAUNCHER - - - - - - - - - - - - - - - - - 
+echo.
+echo                     Help:
+echo                     start - Launches an app
+echo                     list - Writes out the installed apps
+echo                     exit - Exits app launcher app
+echo.
+echo.
+echo    Place batch (.bat) files into /user/ directory in your DebiOS installation.
+echo       All batch apps are installed and launched on your own responsibility.
+echo.
+echo.
+goto cmd
+:badcmd
+echo Unknown command!
+:cmd
+set /p prikaz=Command: 
+
+
+set start=start
+set exit=exit
+
+
+if "%prikaz%" equ "%start%" goto start
+if "%prikaz%" equ "EXIT" goto exit
+if "%prikaz%" equ "%exit%" goto exit
+if "%prikaz%" equ "" goto badcmd
+if "%prikaz%" equ " " goto badcmd
+if "%prikaz%" equ "list" goto list
+goto badcmd
+
+:start
+cd..
+cd user
+echo.  
+echo Enter the filename of the app you want to launch and then press ENTER:
+echo Example: tetris.bat                       To quit the menu, type EXIT.
+goto filename
+:badfilename
+echo You can't enter that! Try again.
+:filename
+echo.
+set /p appname=FILENAME: 
+
+if "%appname%" equ "" goto badfilename
+if "%appname%" equ " " goto badfilename
+if "%appname%" equ "EXIT" goto exitstart
+if "%appname%" equ "exit" goto exitstart
+
+if not exist "%cd%\%appname%" goto nonexistent
+
+start %appname%
+echo.
+echo Starting %appname%. Press any key to return to the main menu of the App Launcher app.
+echo.
+cd..
+cd core
+pause >nul
+goto mainmenu
+
+:nonexistent
+echo This app does not exist! Please enter a valid filename.
+goto filename
+
+:exitstart
+cd..
+cd core
+goto mainmenu
+
+
+
+
+
+:list
+cd..
+cd user
+cls
+echo - - - - - - - - - - - - - - - - - APP LAUNCHER - - - - - - - - - - - - - - - - - 
+echo.
+echo Here is the list of all present batch (.bat) apps in the /user/ directory:
+echo.
+dir /b /a-d *.bat
+echo.
+echo Press ENTER to return to the main screen.
+pause >nul
+goto mainmenu
+
+
+:exit
+echo Shutting down...
+call exit
+call rename applauncher.bat applauncher.debiapp
